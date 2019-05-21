@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "410106319211",
+    "firebase_url": "https://pharmacy-20900.firebaseio.com",
+    "project_id": "pharmacy-20900",
+    "storage_bucket": "pharmacy-20900.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:410106319211:android:01a5292396e05269",
+        "android_client_info": {
+          "package_name": "nabil.ahmed.pharmacy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "410106319211-qhmp677752qc8abonnpvf4hku6qm6mge.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "nabil.ahmed.pharmacy",
+            "certificate_hash": "cfcb19859fccbaed272fbd1aba1d0eee03656311"
+          }
+        },
+        {
+          "client_id": "410106319211-c5ncil3dq508ri058mnf2l0lipav6056.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "nabil.ahmed.pharmacy",
+            "certificate_hash": "5466a10978c0e82e2934a808838f2b35a1ae1ac4"
+          }
+        },
+        {
+          "client_id": "410106319211-fcjnjl4gnvca5tbgfca1kqfrqjl27htu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvJ6YABbcQvZtiZYZZd7X1T7U6vLsLFew"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "410106319211-fcjnjl4gnvca5tbgfca1kqfrqjl27htu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

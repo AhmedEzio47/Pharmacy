@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">Pharmacy</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="bottom_nav_scan">Scan</string>
+    <string name="bottom_nav_search">Search</string>
+    <string name="login_email_hint">Email</string>
+    <string name="login_enter_search">Search for a drug</string>
+    <string name="login_is_pharmacy_text">Are you a pharmacy?</string>
+    <string name="login_pharmacy_text">Login</string>
+    <string name="login_or_sign_up_text">Or signup for a new account</string>
+    <string name="login_send_to_register_btn">Signup A New Account</string>
+    <string name="login_password_hint">Password</string>
+    <string name="login_sign_in_btn">Sign In</string>
+    <string name="register_welcome_text">Welcome</string>
+    <string name="register_email_hint">Pharmacy Email</string>
+    <string name="register_password_hint">Password</string>
+    <string name="register_password_confirm_hint">Confirm Password</string>
+    <string name="register_btn">Sign Up</string>
+    <string name="main_menu_logout_text">Log Out</string>
+    <string name="setup_welcome">Welcome</string>
+    <string name="setup_pharmacy_name">Pharmacy Name</string>
+    <string name="setup_pharmacy_address">Address</string>
+    <string name="setup_save_btn_text">Save</string>
+    <string name="setup_has_delivery_switch_text">Do you have delivery service?</string>
+    <string name="setup_delivery_switch_on">I have delivery service</string>
+    <string name="setup_delivery_switch_off">I don\'t have delivery switch</string>
+    <string name="setup_record_position_text">Record Current Position</string>
+    <string name="main_menu_pharmacy_settings">Pharmacy Settings</string>
+    <string name="new_drug_welcome">Add New Drug</string>
+    <string name="new_drug_name">Drug Name</string>
+    <string name="new_drug_price_dollars">Price in dollars</string>
+    <string name="new_drug_quantity">Quantity</string>
+    <string name="new_drug_save_btn">Save</string>
+    <string name="sell_drug_name">Drug Name</string>
+    <string name="sell_drug_price">Price</string>
+    <string name="sell_drug_quantity">Quantity</string>
+    <string name="sell_drug_btn_text">Sell</string>
+    <string name="search_fragment_detail_text">Try input a drug name</string>
+    <string name="search_fragment_no_result">No result</string>
+    <string name="search_hint">Drug Name</string>
+    <string name="search_result_item_name">Drug Name</string>
+    <string name="search_result_item_price">0 $</string>
+    <string name="search_result_item_stock">In Stock:</string>
+    <string name="login_welcome_details">and make your pharmacy available for customers, go global.</string>
+</resources>
