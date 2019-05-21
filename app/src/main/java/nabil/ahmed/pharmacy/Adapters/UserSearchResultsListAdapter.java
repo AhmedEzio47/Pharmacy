@@ -5,12 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-
-import nabil.ahmed.pharmacy.DatabaseModels.Drug;
 import nabil.ahmed.pharmacy.DatabaseModels.Pharmacy;
 import nabil.ahmed.pharmacy.R;
 
@@ -30,6 +27,17 @@ public class UserSearchResultsListAdapter extends ArrayAdapter<Pharmacy> {
         TextView txtName;
         TextView txtAddress;
         TextView txtDistance;
+    }
+
+
+    @Override
+    public Pharmacy getItem(int position) {
+        return mDataSet.get(position);
+    }
+
+    @Override
+    public int getCount() {
+        return mDataSet.size();
     }
 
     @Override
