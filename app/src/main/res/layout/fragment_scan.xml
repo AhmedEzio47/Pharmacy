@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
     <fragment
         android:id="@+id/barcode_scanner"
         android:name="info.androidhive.barcode.BarcodeReader"
@@ -23,9 +24,24 @@
         app:line_speed="3"
         app:line_width="4"
         app:square_height="150"
-        app:square_width="200">
+        app:square_width="250">
 
     </info.androidhive.barcode.ScannerOverlay>
+
+    <ImageView
+        android:id="@+id/flash_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="15dp"
+        app:srcCompat="@mipmap/flash_one_icon" />
 
 
 </RelativeLayout>
