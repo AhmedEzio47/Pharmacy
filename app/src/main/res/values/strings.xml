@@ -26,7 +26,7 @@
     <string name="setup_has_delivery_switch_text">Do you have delivery service?</string>
     <string name="setup_delivery_switch_on">I have delivery service</string>
     <string name="setup_delivery_switch_off">I don\'t have delivery switch</string>
-    <string name="setup_record_position_text">Record Current Position</string>
+    <string name="setup_record_position_text">Record Current Location</string>
     <string name="main_menu_pharmacy_settings">Pharmacy Settings</string>
     <string name="new_drug_welcome">Add New Drug</string>
     <string name="new_drug_name">Drug Name</string>
@@ -44,4 +44,6 @@
     <string name="search_result_item_price">0 $</string>
     <string name="search_result_item_stock">In Stock:</string>
     <string name="login_welcome_details">and make your pharmacy available for customers, go global.</string>
+    <string name="setup_pharmacy_phone">Phone</string>
+    <string name="setup_pharmacy_mobile">Mobile</string>
 </resources>

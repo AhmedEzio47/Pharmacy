@@ -36,6 +36,7 @@ dependencies {
 
     // google vision library
     implementation 'com.google.android.gms:play-services-vision:17.0.2'
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
 
     implementation 'com.github.Shashank02051997:FancyToast-Android:0.1.6'
 

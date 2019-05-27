@@ -1,14 +1,25 @@
 package nabil.ahmed.pharmacy.Activities;
 
 import android.app.SearchManager;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
@@ -16,6 +27,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.util.ArrayList;
 
@@ -25,6 +37,7 @@ import nabil.ahmed.pharmacy.DatabaseModels.Drug;
 import nabil.ahmed.pharmacy.DatabaseModels.Pharmacy;
 import nabil.ahmed.pharmacy.Fragments.SearchPrimaryFragment;
 import nabil.ahmed.pharmacy.Fragments.UserSearchFragment;
+import nabil.ahmed.pharmacy.Helpers.LocationHelper;
 import nabil.ahmed.pharmacy.Helpers.StaticVariables;
 import nabil.ahmed.pharmacy.R;
 
@@ -37,6 +50,9 @@ public class UserSearchActivity extends AppCompatActivity {
     private ArrayList<Pharmacy> mPharmacies;
     private boolean advanceToNextPharmacy = true;
     private int i;
+    private Location mCurrentLocation;
+
+    private FusedLocationProviderClient fusedLocationClient;
 
     public UserSearchFragment getSearchFragment(){
         return mUserSearchFragment;
@@ -46,6 +62,8 @@ public class UserSearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_search);
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(UserSearchActivity.this);
 
         StaticVariables.userSearch = true;
 
@@ -138,35 +156,40 @@ public class UserSearchActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
-                            mSearchDrugs = new ArrayList<>();
-                            mSearchDrugIds = new ArrayList<>();
-                            mPharmacies = new ArrayList<>();
-                            String id = null;
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                mSearchDrugs.add(document.toObject(Drug.class));
-                                id = document.getReference().getParent().getParent().getId();
-                                mSearchDrugIds.add(document.getId());
+                            if(!task.getResult().isEmpty()){
 
-                                if(task.getResult().isEmpty()){
-                                    hideResultList();
-                                }
+                                getCurrentLocation();
 
-                                db.collection("pharmacies").document(id).get()
-                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                //code here
-                                                if(task.isSuccessful()){
-                                                    mPharmacies.add(task.getResult().toObject(Pharmacy.class));
-                                                    showResultList();
+                                mSearchDrugs = new ArrayList<>();
+                                mSearchDrugIds = new ArrayList<>();
+                                mPharmacies = new ArrayList<>();
+                                String id;
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    mSearchDrugs.add(document.toObject(Drug.class));
+                                    id = document.getReference().getParent().getParent().getId();
+                                    mSearchDrugIds.add(document.getId());
+
+                                    if(task.getResult().isEmpty()){
+                                        hideResultList();
+                                    }
+
+                                    db.collection("pharmacies").document(id).get()
+                                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                    //code here
+                                                    if(task.isSuccessful()){
+                                                        mPharmacies.add(task.getResult().toObject(Pharmacy.class));
+                                                        showResultList();
+                                                    }
+
                                                 }
+                                            });
 
-                                            }
-                                        });
-
+                                }
                             }
 
-                            }
+                        }
 
                         }
                 });
@@ -174,7 +197,7 @@ public class UserSearchActivity extends AppCompatActivity {
     }
 
     private void showResultList(){
-        UserSearchResultsListAdapter userSearchResultListAdapter = new UserSearchResultsListAdapter(getApplicationContext(), mPharmacies);
+        UserSearchResultsListAdapter userSearchResultListAdapter = new UserSearchResultsListAdapter(getApplicationContext(), mPharmacies, mCurrentLocation);
         mUserSearchFragment.setSearchResultListAdapter(userSearchResultListAdapter);
         mUserSearchFragment.setSearchResultListVisibility(View.VISIBLE);
         mUserSearchFragment.setTextViewsVisibility(View.INVISIBLE);
@@ -186,6 +209,65 @@ public class UserSearchActivity extends AppCompatActivity {
         mUserSearchFragment.setTextViewsVisibility(View.VISIBLE);
     }
 
+    private void getCurrentLocation(){
+
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(UserSearchActivity.this);
+
+        if ( Build.VERSION.SDK_INT >= 23 &&
+                ContextCompat.checkSelfPermission( UserSearchActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission( UserSearchActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions( UserSearchActivity.this, new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  },
+                    100 );
+        }
+        else{
+
+            final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+
+            if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+                buildAlertMessageNoGps();
+            }
+
+            fusedLocationClient.getLastLocation()
+                    .addOnCompleteListener(new OnCompleteListener<Location>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Location> task) {
+
+                            if(task.isSuccessful()){
+                                if(task.getResult() != null){
+                                    FancyToast.makeText(UserSearchActivity.this, "Location acquired: "
+                                            , FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
+                                    mCurrentLocation = task.getResult();
+
+                                }
+                            }
+
+                            else {
+                                FancyToast.makeText(UserSearchActivity.this,task.getException().getMessage()
+                                        , FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
+                            }
+                        }
+                    });
+        }
+    }
+
+    private  void buildAlertMessageNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(UserSearchActivity.this);
+        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
 
 
 }
