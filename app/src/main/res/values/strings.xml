@@ -46,4 +46,6 @@
     <string name="login_welcome_details">and make your pharmacy available for customers, go global.</string>
     <string name="setup_pharmacy_phone">Phone</string>
     <string name="setup_pharmacy_mobile">Mobile</string>
+    <string name="view_pharmacy_locate_text">View pharmacy location</string>
+    <string name="view_pharmacy_add_to_cart">Add item to cart</string>
 </resources>

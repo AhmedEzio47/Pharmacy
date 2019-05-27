@@ -197,7 +197,7 @@ public class UserSearchActivity extends AppCompatActivity {
     }
 
     private void showResultList(){
-        UserSearchResultsListAdapter userSearchResultListAdapter = new UserSearchResultsListAdapter(getApplicationContext(), mPharmacies, mCurrentLocation);
+        UserSearchResultsListAdapter userSearchResultListAdapter = new UserSearchResultsListAdapter(getApplicationContext(), mPharmacies, mCurrentLocation, mSearchDrugs);
         mUserSearchFragment.setSearchResultListAdapter(userSearchResultListAdapter);
         mUserSearchFragment.setSearchResultListVisibility(View.VISIBLE);
         mUserSearchFragment.setTextViewsVisibility(View.INVISIBLE);
