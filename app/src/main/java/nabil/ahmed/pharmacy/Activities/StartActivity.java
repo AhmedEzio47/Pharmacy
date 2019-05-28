@@ -12,6 +12,7 @@ public class StartActivity extends AppCompatActivity {
 
     private Button mEnterSearch;
     private Button mSendToLogin;
+    private Button mSendToRegister;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +21,7 @@ public class StartActivity extends AppCompatActivity {
 
         mEnterSearch = findViewById(R.id.start_enter_search);
         mSendToLogin = findViewById(R.id.start_send_to_login);
+        mSendToRegister = findViewById(R.id.start_send_to_register);
 
         mEnterSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,6 +37,13 @@ public class StartActivity extends AppCompatActivity {
             }
         });
 
+        mSendToRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendToRegister();
+            }
+        });
+
 
     }
 
@@ -46,6 +55,12 @@ public class StartActivity extends AppCompatActivity {
 
     private void sendToSearch(){
         Intent intent = new Intent(StartActivity.this, UserSearchActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void sendToRegister() {
+        Intent intent = new Intent(StartActivity.this, RegisterActivity.class);
         startActivity(intent);
         finish();
     }

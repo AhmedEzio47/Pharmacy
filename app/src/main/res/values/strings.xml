@@ -48,4 +48,6 @@
     <string name="setup_pharmacy_mobile">Mobile</string>
     <string name="view_pharmacy_locate_text">View pharmacy location</string>
     <string name="view_pharmacy_add_to_cart">Add item to cart</string>
+    <string name="start_pharmacy_login">Pharmacy Log In</string>
+    <string name="start_pharmacy_register">Or Register A New Account</string>
 </resources>

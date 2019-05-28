@@ -26,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import nabil.ahmed.pharmacy.Activities.LoginActivity;
 import nabil.ahmed.pharmacy.Activities.Setup_SettingsActivity;
+import nabil.ahmed.pharmacy.Activities.StartActivity;
 import nabil.ahmed.pharmacy.DatabaseModels.Drug;
 import nabil.ahmed.pharmacy.Helpers.StaticVariables;
 import nabil.ahmed.pharmacy.MainActivity;
@@ -121,14 +122,14 @@ public class SearchFragment extends Fragment {
         }
 
         else if(item.getItemId() == R.id.search_fragment_pharmacy_settings){
-            sendToSettings();
+            sendToStart();
         }
 
         return true;
     }
 
-    private void sendToSettings() {
-        Intent intent = new Intent(getContext(), Setup_SettingsActivity.class);
+    private void sendToStart() {
+        Intent intent = new Intent(getContext(), StartActivity.class);
         startActivity(intent);
         getActivity().finish();
     }

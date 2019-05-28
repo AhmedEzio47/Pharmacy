@@ -64,7 +64,7 @@ public class UserSearchFragment extends Fragment {
         setHasOptionsMenu(true);
 
         if(StaticVariables.primaryQuery != null){
-            ((UserSearchActivity)getActivity()).queryDatabase2(StaticVariables.primaryQuery);
+            ((UserSearchActivity)getActivity()).queryDatabase(StaticVariables.primaryQuery);
         }
         // Inflate the layout for this fragment
         return view;

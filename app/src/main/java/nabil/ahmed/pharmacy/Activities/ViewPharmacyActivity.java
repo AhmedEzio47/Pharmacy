@@ -1,18 +1,16 @@
 package nabil.ahmed.pharmacy.Activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.shashank.sony.fancytoastlib.FancyToast;
-
-import nabil.ahmed.pharmacy.DatabaseModels.Pharmacy;
 import nabil.ahmed.pharmacy.R;
 
 public class ViewPharmacyActivity extends AppCompatActivity {
@@ -106,8 +104,26 @@ public class ViewPharmacyActivity extends AppCompatActivity {
         mAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ViewPharmacyActivity.this, "Added", Toast.LENGTH_SHORT).show();
+                buildAlertMessageRegister();
             }
         });
+    }
+
+    private  void buildAlertMessageRegister() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(ViewPharmacyActivity.this);
+        builder.setMessage("This feature is for registered user only, do you want to register?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        startActivity(new Intent(ViewPharmacyActivity.this, LoginActivity.class));
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
     }
 }

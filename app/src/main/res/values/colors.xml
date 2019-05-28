@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#1976D2</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorPrimaryLight">#2196F3</color>
+    <color name="colorPrimaryLight">#47A4EE</color>
     <color name="colorAccent">#FF4081</color>
     <color name="divider">#CCCCCC</color>
     <color name="colorMainTextLight">#FFFFFF</color>
@@ -10,4 +10,5 @@
     <color name="colorScannerLine">#7323DC</color>
     <color name="colorGrayBackground">#DDD</color>
     <color name="gray">#444</color>
+    <color name="green">#46A046</color>
 </resources>
