@@ -10,7 +10,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import nabil.ahmed.pharmacy.Helpers.StaticVariables;
 import nabil.ahmed.pharmacy.R;
 
 public class ViewPharmacyActivity extends AppCompatActivity {
@@ -104,7 +109,14 @@ public class ViewPharmacyActivity extends AppCompatActivity {
         mAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                buildAlertMessageRegister();
+                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                if(currentUser == null){
+                    buildAlertMessageRegister();
+                }
+                else {
+                    Toast.makeText(ViewPharmacyActivity.this, "Added to cart.", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }
@@ -115,7 +127,7 @@ public class ViewPharmacyActivity extends AppCompatActivity {
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-                        startActivity(new Intent(ViewPharmacyActivity.this, LoginActivity.class));
+                        sendToLogin();
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -125,5 +137,12 @@ public class ViewPharmacyActivity extends AppCompatActivity {
                 });
         final AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    private void sendToLogin(){
+        Intent intent = new Intent(ViewPharmacyActivity.this, LoginActivity.class);
+        StaticVariables.currentUserType = StaticVariables.USER;
+        //intent.putExtra(StaticVariables.USER_OR_PHARMACY, StaticVariables.USER);
+        startActivity(intent);
     }
 }

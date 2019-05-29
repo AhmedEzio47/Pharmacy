@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import nabil.ahmed.pharmacy.Helpers.StaticVariables;
 import nabil.ahmed.pharmacy.R;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -24,17 +25,24 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputLayout mPassword;
     private TextInputLayout mConfirmPassword;
     private Button mSignUpBtn;
+    //private String userOrPharmacy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        //userOrPharmacy = getIntent().getStringExtra(StaticVariables.USER_OR_PHARMACY);
+
         mAuth = FirebaseAuth.getInstance();
         mEmail = findViewById(R.id.register_email);
         mPassword = findViewById(R.id.register_password);
         mConfirmPassword = findViewById(R.id.register_confirm_password);
         mSignUpBtn = findViewById(R.id.register_signup_btn);
+
+        if(StaticVariables.currentUserType.equals(StaticVariables.USER)){
+            mEmail.setHint("Email");
+        }
 
         mSignUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,7 +91,14 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     private void sendToSetup() {
-        Intent intent = new Intent(RegisterActivity.this, Setup_SettingsActivity.class);
+        Intent intent = new Intent();
+        if(StaticVariables.currentUserType.equals(StaticVariables.PHARMACY)){
+            intent = new Intent(RegisterActivity.this, Setup_SettingsActivity.class);
+        }
+
+        else if(StaticVariables.currentUserType.equals(StaticVariables.USER)){
+            intent = new Intent(RegisterActivity.this, UserSetup_SettingsActivity.class);
+        }
         startActivity(intent);
         finish();
     }

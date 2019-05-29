@@ -5,7 +5,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="bottom_nav_scan">Scan</string>
     <string name="bottom_nav_search">Search</string>
-    <string name="login_email_hint">Email</string>
+    <string name="login_email_hint">Pharmacy Email</string>
     <string name="login_enter_search">Search for a drug</string>
     <string name="login_is_pharmacy_text">Are you a pharmacy?</string>
     <string name="login_pharmacy_text">Login</string>
@@ -50,4 +50,5 @@
     <string name="view_pharmacy_add_to_cart">Add item to cart</string>
     <string name="start_pharmacy_login">Pharmacy Log In</string>
     <string name="start_pharmacy_register">Or Register A New Account</string>
+    <string name="user_setup_name_hint">Your Name</string>
 </resources>

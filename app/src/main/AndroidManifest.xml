@@ -13,8 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.ViewPharmacyActivity"></activity>
-        <activity android:name=".Activities.UserSearchActivity"
+        <activity android:name=".Activities.UserSetup_SettingsActivity"></activity>
+        <activity android:name=".Activities.ViewPharmacyActivity" />
+        <activity
+            android:name=".Activities.UserSearchActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />

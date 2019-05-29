@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import nabil.ahmed.pharmacy.Helpers.StaticVariables;
 import nabil.ahmed.pharmacy.MainActivity;
 import nabil.ahmed.pharmacy.R;
 
@@ -37,6 +38,10 @@ public class LoginActivity extends AppCompatActivity {
         mEmail = findViewById(R.id.login_email);
         mPassword = findViewById(R.id.login_password);
         mSendToRegister = findViewById(R.id.login_send_to_register_btn);
+
+        if(StaticVariables.currentUserType.equals(StaticVariables.USER)){
+            mEmail.setHint("Email");
+        }
 
         mSigninBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,7 +79,12 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, "Login In Success.",
                                     Toast.LENGTH_SHORT).show();
 
-                            sendToMain();
+                            if(StaticVariables.currentUserType.equals(StaticVariables.USER)){
+                                sendToUserSearch();
+                            }
+                            else if(StaticVariables.currentUserType.equals(StaticVariables.PHARMACY)){
+                                sendToMain();
+                            }
 
                         } else {
                             Toast.makeText(LoginActivity.this, task.getException().getMessage(),
@@ -90,8 +100,15 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
+    private void sendToUserSearch() {
+        Intent intent = new Intent(LoginActivity.this, UserSearchActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     private void sendToRegister() {
         Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+        //intent.putExtra(StaticVariables.USER_OR_PHARMACY, userOrPharmacy);
         startActivity(intent);
         finish();
     }
