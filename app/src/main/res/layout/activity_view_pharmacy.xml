@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -232,3 +235,6 @@
     </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>
+
+    <include layout="@layout/order_drug_bottom_sheet"></include>
+</android.support.design.widget.CoordinatorLayout>

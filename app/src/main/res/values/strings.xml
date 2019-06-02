@@ -5,7 +5,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="bottom_nav_scan">Scan</string>
     <string name="bottom_nav_search">Search</string>
-    <string name="login_email_hint">Pharmacy Email</string>
+    <string name="login_email_hint">Email</string>
     <string name="login_enter_search">Search for a drug</string>
     <string name="login_is_pharmacy_text">Are you a pharmacy?</string>
     <string name="login_pharmacy_text">Login</string>
@@ -14,7 +14,7 @@
     <string name="login_password_hint">Password</string>
     <string name="login_sign_in_btn">Sign In</string>
     <string name="register_welcome_text">Welcome</string>
-    <string name="register_email_hint">Pharmacy Email</string>
+    <string name="register_email_hint">Email</string>
     <string name="register_password_hint">Password</string>
     <string name="register_password_confirm_hint">Confirm Password</string>
     <string name="register_btn">Sign Up</string>
@@ -27,7 +27,7 @@
     <string name="setup_delivery_switch_on">I have delivery service</string>
     <string name="setup_delivery_switch_off">I don\'t have delivery switch</string>
     <string name="setup_record_position_text">Record Current Location</string>
-    <string name="main_menu_pharmacy_settings">Pharmacy Settings</string>
+    <string name="main_menu_pharmacy_settings">Profile Settings</string>
     <string name="new_drug_welcome">Add New Drug</string>
     <string name="new_drug_name">Drug Name</string>
     <string name="new_drug_price_dollars">Price in dollars</string>
@@ -48,7 +48,10 @@
     <string name="setup_pharmacy_mobile">Mobile</string>
     <string name="view_pharmacy_locate_text">View pharmacy location</string>
     <string name="view_pharmacy_add_to_cart">Add item to cart</string>
-    <string name="start_pharmacy_login">Pharmacy Log In</string>
+    <string name="start_pharmacy_login">Log In To Your Account</string>
     <string name="start_pharmacy_register">Or Register A New Account</string>
     <string name="user_setup_name_hint">Your Name</string>
+    <string name="register_as_pharmacy_text">Register as pharmacy?</string>
+    <string name="order_drug_btn_text">Order</string>
+    <string name="bottom_nav_orders">Orders</string>
 </resources>

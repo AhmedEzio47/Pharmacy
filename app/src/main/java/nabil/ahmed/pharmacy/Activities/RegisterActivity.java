@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,6 +26,7 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputLayout mPassword;
     private TextInputLayout mConfirmPassword;
     private Button mSignUpBtn;
+    private Switch mRegisterAsPharmacySwitch;
     //private String userOrPharmacy;
 
     @Override
@@ -39,10 +41,11 @@ public class RegisterActivity extends AppCompatActivity {
         mPassword = findViewById(R.id.register_password);
         mConfirmPassword = findViewById(R.id.register_confirm_password);
         mSignUpBtn = findViewById(R.id.register_signup_btn);
+        mRegisterAsPharmacySwitch = findViewById(R.id.register_as_pharmacy_switch);
 
-        if(StaticVariables.currentUserType.equals(StaticVariables.USER)){
-            mEmail.setHint("Email");
-        }
+//        if(StaticVariables.currentUserType.equals(StaticVariables.USER)){
+//            mEmail.setHint("Email");
+//        }
 
         mSignUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,14 +94,18 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     private void sendToSetup() {
-        Intent intent = new Intent();
-        if(StaticVariables.currentUserType.equals(StaticVariables.PHARMACY)){
+
+        Intent intent;
+
+        if(mRegisterAsPharmacySwitch.isChecked()){
+            StaticVariables.currentUserType = StaticVariables.PHARMACY;
             intent = new Intent(RegisterActivity.this, Setup_SettingsActivity.class);
         }
-
-        else if(StaticVariables.currentUserType.equals(StaticVariables.USER)){
+        else {
+            StaticVariables.currentUserType = StaticVariables.USER;
             intent = new Intent(RegisterActivity.this, UserSetup_SettingsActivity.class);
         }
+
         startActivity(intent);
         finish();
     }

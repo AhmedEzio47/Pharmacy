@@ -46,6 +46,7 @@ public class UserSearchActivity extends AppCompatActivity {
     private ArrayList<String> mSearchDrugIds;
     private ArrayList<Pharmacy> mPharmacies;
     private Location mCurrentLocation;
+    private ArrayList<String> mPharmaciesIds;
 
     private FusedLocationProviderClient fusedLocationClient;
 
@@ -108,19 +109,23 @@ public class UserSearchActivity extends AppCompatActivity {
                                 mSearchDrugs = new ArrayList<>();
                                 mSearchDrugIds = new ArrayList<>();
                                 mPharmacies = new ArrayList<>();
-                                String id;
+                                mPharmaciesIds = new ArrayList<>();
+
+                                String pharmacyId;
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     mSearchDrugs.add(document.toObject(Drug.class));
-                                    id = document.getReference().getParent().getParent().getId();
+                                    pharmacyId = document.getReference().getParent().getParent().getId();
                                     mSearchDrugIds.add(document.getId());
 
-                                    db.collection("pharmacies").document(id).get()
+                                    final String finalPharmacyId = pharmacyId;
+                                    db.collection("pharmacies").document(pharmacyId).get()
                                             .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                     //code here
                                                     if(task.isSuccessful()){
                                                         mPharmacies.add(task.getResult().toObject(Pharmacy.class));
+                                                        mPharmaciesIds.add(finalPharmacyId);
                                                         showResultList();
                                                     }
 
@@ -141,7 +146,7 @@ public class UserSearchActivity extends AppCompatActivity {
     }
 
     private void showResultList(){
-        UserSearchResultsListAdapter userSearchResultListAdapter = new UserSearchResultsListAdapter(getApplicationContext(), mPharmacies, mCurrentLocation, mSearchDrugs);
+        UserSearchResultsListAdapter userSearchResultListAdapter = new UserSearchResultsListAdapter(getApplicationContext(), mPharmacies, mCurrentLocation, mSearchDrugs, mPharmaciesIds, mSearchDrugIds);
         mUserSearchFragment.setSearchResultListAdapter(userSearchResultListAdapter);
         mUserSearchFragment.setSearchResultListVisibility(View.VISIBLE);
         mUserSearchFragment.setTextViewsVisibility(View.INVISIBLE);

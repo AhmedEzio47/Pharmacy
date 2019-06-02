@@ -14,6 +14,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import nabil.ahmed.pharmacy.Helpers.StaticVariables;
 import nabil.ahmed.pharmacy.MainActivity;
@@ -26,6 +28,8 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputLayout mEmail;
     private TextInputLayout mPassword;
     private Button mSendToRegister;
+    private String uid;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +43,9 @@ public class LoginActivity extends AppCompatActivity {
         mPassword = findViewById(R.id.login_password);
         mSendToRegister = findViewById(R.id.login_send_to_register_btn);
 
-        if(StaticVariables.currentUserType.equals(StaticVariables.USER)){
-            mEmail.setHint("Email");
-        }
+//        if(StaticVariables.currentUserType.equals(StaticVariables.USER)){
+//            mEmail.setHint("Email");
+//        }
 
         mSigninBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,12 +83,10 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, "Login In Success.",
                                     Toast.LENGTH_SHORT).show();
 
-                            if(StaticVariables.currentUserType.equals(StaticVariables.USER)){
-                                sendToUserSearch();
-                            }
-                            else if(StaticVariables.currentUserType.equals(StaticVariables.PHARMACY)){
-                                sendToMain();
-                            }
+                            uid = mAuth.getCurrentUser().getUid();
+
+                            checkIfUserOrPharmacyThenAct();
+
 
                         } else {
                             Toast.makeText(LoginActivity.this, task.getException().getMessage(),
@@ -92,6 +94,34 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    private void checkIfUserOrPharmacyThenAct() {
+        db.collection("users").document(uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    if(task.getResult().exists()){
+                        StaticVariables.currentUserType = StaticVariables.USER;
+                        sendToUserSearch();
+                        return;
+                    }
+                }
+            }
+        });
+
+        db.collection("pharmacies").document(uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    if(task.getResult().exists()){
+                        StaticVariables.currentUserType = StaticVariables.PHARMACY;
+                        sendToMain();
+                        return;
+                    }
+                }
+            }
+        });
     }
 
     private void sendToMain() {

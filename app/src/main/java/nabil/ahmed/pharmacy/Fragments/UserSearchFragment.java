@@ -27,6 +27,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import nabil.ahmed.pharmacy.Activities.LoginActivity;
 import nabil.ahmed.pharmacy.Activities.Setup_SettingsActivity;
 import nabil.ahmed.pharmacy.Activities.UserSearchActivity;
+import nabil.ahmed.pharmacy.Activities.UserSetup_SettingsActivity;
 import nabil.ahmed.pharmacy.DatabaseModels.Pharmacy;
 import nabil.ahmed.pharmacy.Helpers.StaticVariables;
 import nabil.ahmed.pharmacy.R;
@@ -120,7 +121,13 @@ public class UserSearchFragment extends Fragment {
         }
 
         else if(item.getItemId() == R.id.search_fragment_pharmacy_settings){
-            sendToSettings();
+            if(StaticVariables.currentUserType == StaticVariables.PHARMACY){
+                sendToSettings();
+            }
+            else if(StaticVariables.currentUserType == StaticVariables.USER){
+                sendToUserSettings();
+            }
+
         }
 
         return true;
@@ -129,7 +136,7 @@ public class UserSearchFragment extends Fragment {
     private void sendToSettings() {
         Intent intent = new Intent(getContext(), Setup_SettingsActivity.class);
         startActivity(intent);
-        getActivity().finish();
+        //getActivity().finish();
     }
 
     private void sendToLogin() {
@@ -149,6 +156,11 @@ public class UserSearchFragment extends Fragment {
     public void setTextViewsVisibility(int visibility){
         mNoResult.setVisibility(visibility);
         mDetails.setVisibility(visibility);
+    }
+
+    private void sendToUserSettings(){
+        Intent intent = new Intent(getContext(), UserSetup_SettingsActivity.class);
+        startActivity(intent);
     }
 
 }

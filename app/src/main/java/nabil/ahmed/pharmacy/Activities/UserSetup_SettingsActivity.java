@@ -33,7 +33,6 @@ import com.shashank.sony.fancytoastlib.FancyToast;
 
 import nabil.ahmed.pharmacy.DatabaseModels.Pharmacy;
 import nabil.ahmed.pharmacy.DatabaseModels.User;
-import nabil.ahmed.pharmacy.MainActivity;
 import nabil.ahmed.pharmacy.R;
 
 public class UserSetup_SettingsActivity extends AppCompatActivity {

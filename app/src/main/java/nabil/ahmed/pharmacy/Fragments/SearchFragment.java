@@ -27,6 +27,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import nabil.ahmed.pharmacy.Activities.LoginActivity;
 import nabil.ahmed.pharmacy.Activities.Setup_SettingsActivity;
 import nabil.ahmed.pharmacy.Activities.StartActivity;
+import nabil.ahmed.pharmacy.Activities.UserSetup_SettingsActivity;
 import nabil.ahmed.pharmacy.DatabaseModels.Drug;
 import nabil.ahmed.pharmacy.Helpers.StaticVariables;
 import nabil.ahmed.pharmacy.MainActivity;
@@ -122,8 +123,16 @@ public class SearchFragment extends Fragment {
         }
 
         else if(item.getItemId() == R.id.search_fragment_pharmacy_settings){
-            sendToStart();
+
+            if(StaticVariables.currentUserType == StaticVariables.PHARMACY){
+                sendToSettings();
+            }
+            else if(StaticVariables.currentUserType == StaticVariables.USER){
+                sendToUserSettings();
+            }
+
         }
+
 
         return true;
     }
@@ -151,6 +160,17 @@ public class SearchFragment extends Fragment {
     public void setTextViewsVisibility(int visibility){
         mNoResult.setVisibility(visibility);
         mDetails.setVisibility(visibility);
+    }
+
+    private void sendToUserSettings(){
+        Intent intent = new Intent(getContext(), UserSetup_SettingsActivity.class);
+        startActivity(intent);
+    }
+
+    private void sendToSettings() {
+        Intent intent = new Intent(getContext(), Setup_SettingsActivity.class);
+        startActivity(intent);
+        //getActivity().finish();
     }
 
 }

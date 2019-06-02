@@ -21,13 +21,17 @@ public class UserSearchResultsListAdapter extends ArrayAdapter<Pharmacy> {
     private Context mContext;
     private Location mCurrentLocation;
     private ArrayList<Drug> mDrugs;
+    private ArrayList<String> mPharmaciesIds;
+    private ArrayList<String> mDrugsIds;
 
-    public UserSearchResultsListAdapter(Context context, ArrayList<Pharmacy> pharmacies, Location location, ArrayList<Drug> drugs) {
+    public UserSearchResultsListAdapter(Context context, ArrayList<Pharmacy> pharmacies, Location location, ArrayList<Drug> drugs, ArrayList<String> pharmaciesIds, ArrayList<String> drugsIds) {
         super(context, R.layout.user_search_result_item);
         mContext = context;
         mPharmacies = pharmacies;
         mCurrentLocation = location;
         mDrugs = drugs;
+        mPharmaciesIds = pharmaciesIds;
+        mDrugsIds = drugsIds;
     }
 
     private static class ViewHolder {
@@ -53,6 +57,9 @@ public class UserSearchResultsListAdapter extends ArrayAdapter<Pharmacy> {
         // Get the data item for this position
         final Pharmacy pharmacy = getItem(position);
         final Drug drug = mDrugs.get(position);
+        final String pharmacyId = mPharmaciesIds.get(position);
+        final String drugId = mDrugsIds.get(position);
+
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
 
@@ -69,7 +76,7 @@ public class UserSearchResultsListAdapter extends ArrayAdapter<Pharmacy> {
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    sendToViewPharmacy(pharmacy);
+                    sendToViewPharmacy(pharmacyId, drugId, drug);
                 }
             });
 
@@ -95,15 +102,13 @@ public class UserSearchResultsListAdapter extends ArrayAdapter<Pharmacy> {
         return convertView;
     }
 
-    private void sendToViewPharmacy(Pharmacy pharmacy){
+    private void sendToViewPharmacy(String pharmacyId, String drugId, Drug drug){
         Intent intent = new Intent(mContext, ViewPharmacyActivity.class);
-        intent.putExtra("pharmacy_name", pharmacy.name);
-        intent.putExtra("pharmacy_address", pharmacy.address);
-        intent.putExtra("pharmacy_lat", pharmacy.location.getLatitude());
-        intent.putExtra("pharmacy_long", pharmacy.location.getLongitude());
-        intent.putExtra("pharmacy_phone", pharmacy.phone);
-        intent.putExtra("pharmacy_mobile", pharmacy.mobile);
-        intent.putExtra("pharmacy_delivery", pharmacy.hasDeliveryService);
+        intent.putExtra("pharmacy_id", pharmacyId);
+        intent.putExtra("drug_id", drugId);
+        intent.putExtra("drug_stock", drug.quantity);
+        intent.putExtra("drug_name", drug.name);
+        intent.putExtra("drug_price", drug.price);
         mContext.startActivity(intent);
     }
 

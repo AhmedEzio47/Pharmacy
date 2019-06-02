@@ -19,7 +19,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.vision.barcode.Barcode;
-import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -33,8 +32,10 @@ import info.androidhive.barcode.BarcodeReader;
 import nabil.ahmed.pharmacy.Activities.LoginActivity;
 import nabil.ahmed.pharmacy.Activities.NewDrugActivity;
 import nabil.ahmed.pharmacy.Activities.StartActivity;
+import nabil.ahmed.pharmacy.Activities.UserSearchActivity;
 import nabil.ahmed.pharmacy.Adapters.SearchResultListAdapter;
 import nabil.ahmed.pharmacy.DatabaseModels.Drug;
+import nabil.ahmed.pharmacy.Fragments.PharmacyOrdersFragment;
 import nabil.ahmed.pharmacy.Fragments.ScanFragment;
 import nabil.ahmed.pharmacy.Fragments.SearchFragment;
 import nabil.ahmed.pharmacy.Fragments.SearchPrimaryFragment;
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity  implements BarcodeReader.Ba
     private TextView mBottomSheetPrice;
     private Button mBottomSheetSellBtn;
     private SeekBar mBottomSheetSeekBar;
-    private int mQuantity;
+    private int mStock;
     private String mCurrentDrugId;
 
     private ArrayList<Drug> mSearchDrugs;
@@ -78,6 +79,7 @@ public class MainActivity extends AppCompatActivity  implements BarcodeReader.Ba
         final ScanFragment scanFragment = new ScanFragment();
         mSearchFragment = new SearchFragment();
         mSearchPrimaryFragment = new SearchPrimaryFragment();
+        final PharmacyOrdersFragment ordersFragment = new PharmacyOrdersFragment();
 
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -90,6 +92,9 @@ public class MainActivity extends AppCompatActivity  implements BarcodeReader.Ba
                     case R.id.bottom_nav_search:
                         replaceFragment(mSearchPrimaryFragment);
                         return true;
+
+                    case R.id.bottom_nav_orders:
+                        replaceFragment(ordersFragment);
 
                     default:
                         return false;
@@ -108,7 +113,7 @@ public class MainActivity extends AppCompatActivity  implements BarcodeReader.Ba
         mBottomSheetSellBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int quantity = mQuantity - (mBottomSheetSeekBar.getProgress() + 1);
+                int quantity = mStock - (mBottomSheetSeekBar.getProgress() + 1);
                 if(quantity < 0){
                     FancyToast.makeText(MainActivity.this,"Insufficient quantity.",FancyToast.LENGTH_LONG,FancyToast.ERROR,false).show();
                 }
@@ -200,6 +205,7 @@ public class MainActivity extends AppCompatActivity  implements BarcodeReader.Ba
 
         else{
             uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            checkIfUserOrPharmacyThenAct();
         }
     }
 
@@ -276,7 +282,7 @@ public class MainActivity extends AppCompatActivity  implements BarcodeReader.Ba
     private void sellDrug(Drug drug){
 
         String name = drug.name;
-        mQuantity = Integer.parseInt(drug.quantity);
+        mStock = Integer.parseInt(drug.quantity);
         double price = Double.parseDouble(drug.price);
 
         mBottomSheetDrugName.setText(name);
@@ -301,5 +307,38 @@ public class MainActivity extends AppCompatActivity  implements BarcodeReader.Ba
             }
         });
 
+    }
+
+    private void checkIfUserOrPharmacyThenAct() {
+        db.collection("users").document(uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    if(task.getResult().exists()){
+                        StaticVariables.currentUserType = StaticVariables.USER;
+                        sendToUserSearch();
+                        return;
+                    }
+                }
+            }
+        });
+
+        db.collection("pharmacies").document(uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    if(task.getResult().exists()){
+                        StaticVariables.currentUserType = StaticVariables.PHARMACY;
+                        return;
+                    }
+                }
+            }
+        });
+    }
+
+    private void sendToUserSearch() {
+        Intent intent = new Intent(MainActivity.this, UserSearchActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
