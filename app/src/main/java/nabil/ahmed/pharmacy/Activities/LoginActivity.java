@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -16,6 +18,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.pnikosis.materialishprogress.ProgressWheel;
 
 import nabil.ahmed.pharmacy.Helpers.StaticVariables;
 import nabil.ahmed.pharmacy.MainActivity;
@@ -30,6 +33,8 @@ public class LoginActivity extends AppCompatActivity {
     private Button mSendToRegister;
     private String uid;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    //private ProgressBar mProgressBar;
+    private FrameLayout mProgressOverlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +48,10 @@ public class LoginActivity extends AppCompatActivity {
         mPassword = findViewById(R.id.login_password);
         mSendToRegister = findViewById(R.id.login_send_to_register_btn);
 
-//        if(StaticVariables.currentUserType.equals(StaticVariables.USER)){
-//            mEmail.setHint("Email");
-//        }
+//        mProgressBar = findViewById(R.id.login_progress_bar);
+//        mProgressBar.setVisibility(View.INVISIBLE);
+        mProgressOverlay = findViewById(R.id.login_progress_wheel);
+
 
         mSigninBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,6 +65,8 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 else {
+                    //mProgressBar.setVisibility(View.VISIBLE);
+                    mProgressOverlay.setVisibility(View.VISIBLE);
                     signInUser(email, password);
                 }
 
@@ -89,9 +97,12 @@ public class LoginActivity extends AppCompatActivity {
 
 
                         } else {
+                            //mProgressBar.setVisibility(View.INVISIBLE);
+                            mProgressOverlay.setVisibility(View.GONE);
                             Toast.makeText(LoginActivity.this, task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
                         }
+
                     }
                 });
     }
@@ -104,7 +115,8 @@ public class LoginActivity extends AppCompatActivity {
                     if(task.getResult().exists()){
                         StaticVariables.currentUserType = StaticVariables.USER;
                         sendToUserSearch();
-                        return;
+                        //mProgressBar.setVisibility(View.INVISIBLE);
+                        mProgressOverlay.setVisibility(View.GONE);
                     }
                 }
             }

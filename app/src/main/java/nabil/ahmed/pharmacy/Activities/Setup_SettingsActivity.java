@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -49,6 +50,7 @@ public class Setup_SettingsActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     private Location mPharmacyLocation;
+    private FrameLayout mProgressOverlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,12 +66,15 @@ public class Setup_SettingsActivity extends AppCompatActivity {
         mDeliverySwitch = findViewById(R.id.setup_has_delivery_switch);
         mLocationBtn = findViewById(R.id.setup_location_btn);
         mSaveBtn = findViewById(R.id.setup_save_btn);
+        mProgressOverlay = findViewById(R.id.setup_progress_wheel);
 
+        mProgressOverlay.setVisibility(View.VISIBLE);
         getPharmacyData();
 
         mLocationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mProgressOverlay.setVisibility(View.VISIBLE);
                 getCurrentLocation();
             }
         });
@@ -98,6 +103,7 @@ public class Setup_SettingsActivity extends AppCompatActivity {
                     if(mPharmacyLocation != null)
                         pharmacy.location = new GeoPoint(mPharmacyLocation.getLatitude(), mPharmacyLocation.getLongitude());
 
+                    mProgressOverlay.setVisibility(View.VISIBLE);
                     addPharmacy(pharmacy);
 
                 }
@@ -129,6 +135,8 @@ public class Setup_SettingsActivity extends AppCompatActivity {
 
                 }
 
+                mProgressOverlay.setVisibility(View.GONE);
+
             }
         });
     }
@@ -154,6 +162,8 @@ public class Setup_SettingsActivity extends AppCompatActivity {
                     Toast.makeText(Setup_SettingsActivity.this, task.getException().getMessage(),
                             Toast.LENGTH_SHORT).show();
                 }
+
+                mProgressOverlay.setVisibility(View.GONE);
 
             }
         });
@@ -196,6 +206,8 @@ public class Setup_SettingsActivity extends AppCompatActivity {
                                 FancyToast.makeText(Setup_SettingsActivity.this,task.getException().getMessage()
                                         , FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
                             }
+
+                            mProgressOverlay.setVisibility(View.GONE);
                         }
                     });
         }

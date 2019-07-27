@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ public class NewDrugActivity extends AppCompatActivity {
     private TextInputLayout mDrugQuantity;
     private Button mSaveBtn;
     private TextView mWelcome;
+    private FrameLayout mProgressOverlay;
     private String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -45,9 +47,11 @@ public class NewDrugActivity extends AppCompatActivity {
         mDrugQuantity = findViewById(R.id.new_drug_quantity);
         mSaveBtn = findViewById(R.id.new_drug_save_btn);
         mWelcome = findViewById(R.id.new_drug_welcome);
+        mProgressOverlay = findViewById(R.id.new_drug_progress_wheel);
 
         if(edit != null){
             mWelcome.setText(edit);
+            mProgressOverlay.setVisibility(View.VISIBLE);
             getDrugData(drugId);
         }
 
@@ -70,6 +74,7 @@ public class NewDrugActivity extends AppCompatActivity {
                     drug.price = price;
                     drug.quantity = quantity;
 
+                    mProgressOverlay.setVisibility(View.VISIBLE);
                     addNewDrug(drugId, drug);
                 }
             }
@@ -89,6 +94,8 @@ public class NewDrugActivity extends AppCompatActivity {
                 else {
                     Toast.makeText(NewDrugActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
+
+                mProgressOverlay.setVisibility(View.GONE);
             }
         });
     }
@@ -104,6 +111,8 @@ public class NewDrugActivity extends AppCompatActivity {
                             mDrugPrice.getEditText().setText(drug.price);
                             mDrugQuantity.getEditText().setText(drug.quantity);
                         }
+
+                        mProgressOverlay.setVisibility(View.GONE);
                     }
                 });
     }

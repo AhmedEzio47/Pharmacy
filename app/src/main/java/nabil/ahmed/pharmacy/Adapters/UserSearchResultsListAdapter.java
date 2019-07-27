@@ -109,6 +109,7 @@ public class UserSearchResultsListAdapter extends ArrayAdapter<Pharmacy> {
         intent.putExtra("drug_stock", drug.quantity);
         intent.putExtra("drug_name", drug.name);
         intent.putExtra("drug_price", drug.price);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(intent);
     }
 

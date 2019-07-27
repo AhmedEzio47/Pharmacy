@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputLayout mConfirmPassword;
     private Button mSignUpBtn;
     private Switch mRegisterAsPharmacySwitch;
+    private FrameLayout mProgressOverlay;
     //private String userOrPharmacy;
 
     @Override
@@ -42,6 +44,7 @@ public class RegisterActivity extends AppCompatActivity {
         mConfirmPassword = findViewById(R.id.register_confirm_password);
         mSignUpBtn = findViewById(R.id.register_signup_btn);
         mRegisterAsPharmacySwitch = findViewById(R.id.register_as_pharmacy_switch);
+        mProgressOverlay = findViewById(R.id.register_progress_wheel);
 
 //        if(StaticVariables.currentUserType.equals(StaticVariables.USER)){
 //            mEmail.setHint("Email");
@@ -66,6 +69,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
 
                 else{
+                    mProgressOverlay.setVisibility(View.VISIBLE);
                     signUpUser(email, password);
                 }
             }
@@ -87,6 +91,8 @@ public class RegisterActivity extends AppCompatActivity {
                             Toast.makeText(RegisterActivity.this, task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
                         }
+
+                        mProgressOverlay.setVisibility(View.GONE);
                     }
                 });
     }

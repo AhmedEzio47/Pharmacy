@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/orders_settings"
+        android:title="@string/main_menu_pharmacy_settings" />
+    <item
+        android:id="@+id/orders_logout"
+        android:title="@string/main_menu_logout_text" />
+
+</menu>

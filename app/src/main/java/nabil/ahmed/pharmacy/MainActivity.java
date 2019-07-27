@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity  implements BarcodeReader.Ba
 
                     case R.id.bottom_nav_orders:
                         replaceFragment(ordersFragment);
+                        return true;
 
                     default:
                         return false;

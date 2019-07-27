@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -43,6 +44,7 @@ public class UserSetup_SettingsActivity extends AppCompatActivity {
     private TextInputLayout mUserMobile;
     private Button mSaveBtn;
     private ImageButton mLocationBtn;
+    private FrameLayout mProgressOverlay;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     private Location mUserHomeLocation;
@@ -50,7 +52,7 @@ public class UserSetup_SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_setup__settings);
+        setContentView(R.layout.activity_user_setup_settings);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(UserSetup_SettingsActivity.this);
 
@@ -59,12 +61,15 @@ public class UserSetup_SettingsActivity extends AppCompatActivity {
         mUserMobile = findViewById(R.id.user_setup_mobile);
         mLocationBtn = findViewById(R.id.user_setup_location_btn);
         mSaveBtn = findViewById(R.id.user_setup_save_btn);
+        mProgressOverlay = findViewById(R.id.user_setup_progress_wheel);
 
+        mProgressOverlay.setVisibility(View.VISIBLE);
         getUserData();
 
         mLocationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mProgressOverlay.setVisibility(View.VISIBLE);
                 getCurrentLocation();
             }
         });
@@ -89,6 +94,7 @@ public class UserSetup_SettingsActivity extends AppCompatActivity {
                     if(mUserHomeLocation != null)
                         user.location = new GeoPoint(mUserHomeLocation.getLatitude(), mUserHomeLocation.getLongitude());
 
+                    mProgressOverlay.setVisibility(View.VISIBLE);
                     addUser(user);
 
                 }
@@ -116,6 +122,7 @@ public class UserSetup_SettingsActivity extends AppCompatActivity {
                     }
 
                 }
+                mProgressOverlay.setVisibility(View.GONE);
 
             }
         });
@@ -135,6 +142,7 @@ public class UserSetup_SettingsActivity extends AppCompatActivity {
                     Toast.makeText(UserSetup_SettingsActivity.this, task.getException().getMessage(),
                             Toast.LENGTH_SHORT).show();
                 }
+                mProgressOverlay.setVisibility(View.GONE);
 
             }
         });
@@ -177,6 +185,7 @@ public class UserSetup_SettingsActivity extends AppCompatActivity {
                                 FancyToast.makeText(UserSetup_SettingsActivity.this,task.getException().getMessage()
                                         , FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
                             }
+                            mProgressOverlay.setVisibility(View.GONE);
                         }
                     });
         }

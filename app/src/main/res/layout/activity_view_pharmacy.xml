@@ -100,17 +100,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/view_pharmacy_location_group">
 
-    <ImageButton
-        android:id="@+id/view_pharmacy_phone_btn"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@drawable/circle_shape_green"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/call_icon" />
+        <ImageButton
+            android:id="@+id/view_pharmacy_phone_btn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/circle_shape_green"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@mipmap/call_icon" />
 
         <TextView
             android:id="@+id/view_pharmacy_phone"
@@ -148,17 +148,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/view_pharmacy_phone_group">
 
-    <ImageButton
-        android:id="@+id/view_pharmacy_mobile_btn"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@drawable/circle_shape_primary_light"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/call_mobile_icon" />
+        <ImageButton
+            android:id="@+id/view_pharmacy_mobile_btn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/circle_shape_primary_light"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@mipmap/call_mobile_icon" />
 
     <TextView
         android:id="@+id/view_pharmacy_mobile"
@@ -196,17 +196,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/view_pharmacy_mobile_group">
 
-    <ImageButton
-        android:id="@+id/view_pharmacy_add_to_cart_btn"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@drawable/circle_shape_orange"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/add_to_cart_icon" />
+        <ImageButton
+            android:id="@+id/view_pharmacy_add_to_cart_btn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/circle_shape_orange"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@mipmap/add_to_cart_icon" />
 
     <TextView
         android:id="@+id/textView11"
@@ -235,6 +235,10 @@
     </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>
+
+    <include android:id="@+id/view_pharmacy_progress_wheel"
+        android:visibility="gone"
+        layout="@layout/progress_wheel"/>
 
     <include layout="@layout/order_drug_bottom_sheet"></include>
 </android.support.design.widget.CoordinatorLayout>

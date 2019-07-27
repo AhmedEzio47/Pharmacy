@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -28,6 +29,7 @@ import com.shashank.sony.fancytoastlib.FancyToast;
 
 import nabil.ahmed.pharmacy.DatabaseModels.Pharmacy;
 import nabil.ahmed.pharmacy.DatabaseModels.Order;
+import nabil.ahmed.pharmacy.DatabaseModels.PharmacyNotification;
 import nabil.ahmed.pharmacy.Helpers.StaticVariables;
 import nabil.ahmed.pharmacy.R;
 
@@ -39,6 +41,7 @@ public class ViewPharmacyActivity extends AppCompatActivity {
     ImageButton mPhoneCall;
     ImageButton mMobileCall;
     ImageButton mAddToCart;
+    private FrameLayout mProgressOverlay;
 
     ConstraintLayout mLocationGroup;
     ConstraintLayout mPhoneGroup;
@@ -57,6 +60,7 @@ public class ViewPharmacyActivity extends AppCompatActivity {
     private String mDrugName;
     private String mDrugPrice;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +78,7 @@ public class ViewPharmacyActivity extends AppCompatActivity {
         mPhoneCall = findViewById(R.id.view_pharmacy_phone_btn);
         mMobileCall = findViewById(R.id.view_pharmacy_mobile_btn);
         mAddToCart = findViewById(R.id.view_pharmacy_add_to_cart_btn);
+        mProgressOverlay = findViewById(R.id.view_pharmacy_progress_wheel);
 
 
         mLocationGroup = findViewById(R.id.view_pharmacy_location_group);
@@ -89,6 +94,7 @@ public class ViewPharmacyActivity extends AppCompatActivity {
         mBottomSheetSeekBar = findViewById(R.id.order_drug_seekbar);
         mBottomSheetOrderBtn = findViewById(R.id.order_drug_btn);
 
+
         mBottomSheetOrderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,16 +103,18 @@ public class ViewPharmacyActivity extends AppCompatActivity {
                     FancyToast.makeText(ViewPharmacyActivity.this,"Insufficient quantity.",FancyToast.LENGTH_LONG,FancyToast.ERROR,false).show();
                 }
                 else{
+                    mProgressOverlay.setVisibility(View.VISIBLE);
                     orderDrug(mDrugId, quantity);
                 }
             }
         });
 
+        mProgressOverlay.setVisibility(View.VISIBLE);
         getPharmacyDataThenAct();
 
     }
 
-    private void orderDrug(String drugId, int quantity) {
+    private void orderDrug(final String drugId, final int quantity) {
 
         Order order = new Order();
         order.userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -119,9 +127,24 @@ public class ViewPharmacyActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {
                 if(task.isSuccessful()){
-                    Toast.makeText(ViewPharmacyActivity.this, "Order sent to pharmacy.", Toast.LENGTH_SHORT).show();
-                    mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
+
+                    PharmacyNotification notification = new PharmacyNotification();
+                    notification.fromUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    notification.drugId = mDrugId;
+                    notification.quantity = quantity;
+                    db.collection("pharmacies").document(mPharmacyId)
+                            .collection("notifications").add(notification).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentReference> task) {
+                            if(task.isSuccessful()){
+                                Toast.makeText(ViewPharmacyActivity.this, "Order sent to pharmacy.", Toast.LENGTH_SHORT).show();
+                                mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                            }
+                        }
+                    });
                 }
+                mProgressOverlay.setVisibility(View.GONE);
             }
         });
 
@@ -235,6 +258,7 @@ public class ViewPharmacyActivity extends AppCompatActivity {
 
 
                 }
+                mProgressOverlay.setVisibility(View.GONE);
 
             }
         });

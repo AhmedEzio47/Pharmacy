@@ -85,6 +85,15 @@ public class SearchFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if(FirebaseAuth.getInstance().getCurrentUser() != null){
+            uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            getPharmacyName();
+        }
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
@@ -102,15 +111,6 @@ public class SearchFragment extends Fragment {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
         }
 
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if(FirebaseAuth.getInstance().getCurrentUser() != null){
-            uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            getPharmacyName();
-        }
     }
 
     @Override
@@ -143,11 +143,6 @@ public class SearchFragment extends Fragment {
         getActivity().finish();
     }
 
-    private void sendToLogin() {
-        Intent intent = new Intent(getContext(), LoginActivity.class);
-        startActivity(intent);
-        getActivity().finish();
-    }
 
     public void setSearchResultListAdapter(ArrayAdapter<Drug> adapter){
         mSearchResultList.setAdapter(adapter);
@@ -160,6 +155,12 @@ public class SearchFragment extends Fragment {
     public void setTextViewsVisibility(int visibility){
         mNoResult.setVisibility(visibility);
         mDetails.setVisibility(visibility);
+    }
+
+    private void sendToLogin() {
+        Intent intent = new Intent(getContext(), LoginActivity.class);
+        startActivity(intent);
+        getActivity().finish();
     }
 
     private void sendToUserSettings(){

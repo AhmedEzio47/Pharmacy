@@ -28,14 +28,19 @@ public class SearchResultListAdapter extends ArrayAdapter<Drug> {
         Button editBtn;
     }
 
+    public SearchResultListAdapter(Context context, ArrayList<Drug> drugs, ArrayList<String> ids) {
+        super(context, R.layout.search_result_item, drugs);
+        mContext = context;
+        mDataSet = drugs;
+        mIds = ids;
+    }
+
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
         Drug drug = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
-
-        final View result;
 
         if (convertView == null) {
 
@@ -47,17 +52,10 @@ public class SearchResultListAdapter extends ArrayAdapter<Drug> {
             viewHolder.txtStock =  convertView.findViewById(R.id.search_result_item_stock);
             viewHolder.editBtn =  convertView.findViewById(R.id.search_result_item_edit_btn);
 
-            result=convertView;
-
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
-            result=convertView;
         }
-
-//        Animation animation = AnimationUtils.loadAnimation(mContext, (position > lastPosition) ? R.anim.up_from_bottom : R.anim.down_from_top);
-//        result.startAnimation(animation);
-//        lastPosition = position;
 
         viewHolder.txtName.setText(drug.name);
         viewHolder.txtPrice.setText(drug.price + "$");
@@ -72,13 +70,6 @@ public class SearchResultListAdapter extends ArrayAdapter<Drug> {
         return convertView;
     }
 
-
-    public SearchResultListAdapter(Context context, ArrayList<Drug> drugs, ArrayList<String> ids) {
-        super(context, R.layout.search_result_item, drugs);
-        mContext = context;
-        mDataSet = drugs;
-        mIds = ids;
-    }
 
     private void sendToEditDrug(int position){
         Intent intent = new Intent(mContext, NewDrugActivity.class);

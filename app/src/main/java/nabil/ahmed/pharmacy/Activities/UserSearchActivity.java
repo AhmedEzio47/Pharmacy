@@ -17,6 +17,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -47,8 +48,10 @@ public class UserSearchActivity extends AppCompatActivity {
     private ArrayList<Pharmacy> mPharmacies;
     private Location mCurrentLocation;
     private ArrayList<String> mPharmaciesIds;
+    private FrameLayout mProgressOverlay;
 
     private FusedLocationProviderClient fusedLocationClient;
+
 
     public UserSearchFragment getSearchFragment(){
         return mUserSearchFragment;
@@ -58,6 +61,8 @@ public class UserSearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_search);
+
+        mProgressOverlay = findViewById(R.id.user_search_progress_wheel);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(UserSearchActivity.this);
         final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
@@ -90,6 +95,7 @@ public class UserSearchActivity extends AppCompatActivity {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             // Do work using string
+            mProgressOverlay.setVisibility(View.VISIBLE);
             queryDatabase(query);
 
         }
@@ -97,7 +103,10 @@ public class UserSearchActivity extends AppCompatActivity {
 
     public void queryDatabase(String text) {
         if(mCurrentLocation == null)
+        {
+            mProgressOverlay.setVisibility(View.VISIBLE);
             getCurrentLocation();
+        }
 
         db.collectionGroup("drugs").whereEqualTo("name", text).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -128,6 +137,8 @@ public class UserSearchActivity extends AppCompatActivity {
                                                         mPharmaciesIds.add(finalPharmacyId);
                                                         showResultList();
                                                     }
+
+                                                    mProgressOverlay.setVisibility(View.GONE);
 
                                                 }
                                             });
@@ -185,6 +196,8 @@ public class UserSearchActivity extends AppCompatActivity {
                                 FancyToast.makeText(UserSearchActivity.this,task.getException().getMessage()
                                         , FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
                             }
+
+                            mProgressOverlay.setVisibility(View.GONE);
                         }
                     });
         }
