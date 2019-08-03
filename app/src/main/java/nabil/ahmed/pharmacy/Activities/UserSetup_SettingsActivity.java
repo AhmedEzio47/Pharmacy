@@ -25,11 +25,15 @@ import android.widget.Toast;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 import nabil.ahmed.pharmacy.DatabaseModels.Pharmacy;
@@ -135,6 +139,7 @@ public class UserSetup_SettingsActivity extends AppCompatActivity {
                 if(task.isSuccessful()){
                     Toast.makeText(UserSetup_SettingsActivity.this, "Saved Successfully.",
                             Toast.LENGTH_SHORT).show();
+                    pushDeviceToken();
                     sendToUserSearch();
                 }
 
@@ -213,5 +218,16 @@ public class UserSetup_SettingsActivity extends AppCompatActivity {
         Intent intent = new Intent(UserSetup_SettingsActivity.this, UserSearchActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    private void pushDeviceToken(){
+
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                String deviceToken = instanceIdResult.getToken();
+                db.collection("users").document(uid).update("deviceToken", deviceToken);
+            }
+        });
     }
 }

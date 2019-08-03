@@ -10,5 +10,6 @@ public class Pharmacy {
     public boolean hasDeliveryService;
     public GeoPoint location;
     public String notes;
+    public String deviceToken;
 
 }

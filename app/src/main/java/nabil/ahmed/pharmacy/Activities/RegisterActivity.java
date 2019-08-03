@@ -13,9 +13,14 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import nabil.ahmed.pharmacy.Helpers.StaticVariables;
 import nabil.ahmed.pharmacy.R;
@@ -29,6 +34,8 @@ public class RegisterActivity extends AppCompatActivity {
     private Button mSignUpBtn;
     private Switch mRegisterAsPharmacySwitch;
     private FrameLayout mProgressOverlay;
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     //private String userOrPharmacy;
 
     @Override
@@ -85,6 +92,7 @@ public class RegisterActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Toast.makeText(RegisterActivity.this, "Sign up success.",
                                     Toast.LENGTH_SHORT).show();
+
                             sendToSetup();
 
                         } else {

@@ -7,4 +7,5 @@ public class User {
     public String address;
     public String mobile;
     public GeoPoint location;
+    public String deviceToken;
 }

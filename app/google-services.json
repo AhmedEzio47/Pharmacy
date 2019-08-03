@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "410106319211-odeiarmh7vqehgdt4h9dam61k0mmqlmm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "nabil.ahmed.pharmacy",
+            "certificate_hash": "9709bea382ec3c092b33bedf6af588b5a3795d0d"
+          }
+        },
+        {
           "client_id": "410106319211-qhmp677752qc8abonnpvf4hku6qm6mge.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
